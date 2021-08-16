@@ -12,8 +12,8 @@ async function getBookTitle(html) {
     const title = $('[class="name-link"]');
     const author = $('.tile-attribute');
 
-    console.log(title.html());
-    console.log(author.html());
+    const bookDetails = `${title.html()}By: ${author.html()}`;
+    return bookDetails;
 
     // need to loop through each node and grab: 
     // title

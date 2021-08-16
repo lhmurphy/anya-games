@@ -9,8 +9,15 @@ async function getHTML(url) {
 async function getBookTitle(html) {
     // load up cheerio
     const $ = cheerio.load(html);
-    const el = $('[class="name-link"]')
-    console.log(el);
+    const title = $('[class="name-link"]');
+    const author = $('.tile-attribute');
+
+    console.log(title.html());
+    console.log(author.html());
+
+    // need to loop through each node and grab: 
+    // title
+    // author
 }
 
 export { getHTML, getBookTitle };

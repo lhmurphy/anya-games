@@ -7,16 +7,17 @@ const PubWeeklyUrl = 'https://www.publishersweekly.com/pw/nielsen/hardcoverficti
 const sites = ['WHSmiths', ];
 
 async function go() {
-    const WHSmithData = await getHTML(WHSmithUrl);
-    const WHSmithsBooks = await getBookTitle(WHSmithData, 'WHSmiths');
+    const WHSmithPromise = getHTML(WHSmithUrl);
+    const PubWeeklyPromise = getHTML(PubWeeklyUrl);
+    const [WHSmithHTML, PubWeeklyHTML] = await Promise.all([WHSmithPromise, PubWeeklyPromise])
 
-    const PubWeeklyData = await getHTML(PubWeeklyUrl);
-    const PubWeeklyBooks = await getBookTitle(PubWeeklyData, 'PubWeekly');
+    const WHSmithsBooks = await getBookTitle(WHSmithHTML, 'WHSmiths');
+    const PubWeeklyBooks = await getBookTitle(PubWeeklyHTML, 'PubWeekly');
 
-    console.log(`The WHSmiths bestsellers are: ${WHSmithsBooks}`);
-
-    console.log(`The Publishers Weekly bestsellers are: ${PubWeeklyBooks}`);
-
+    console.log(`
+        The WHSmiths bestsellers are: ${WHSmithsBooks} <br>
+        The Publishers Weekly bestsellers are: ${PubWeeklyBooks} 
+    `);
 }
 
 go();

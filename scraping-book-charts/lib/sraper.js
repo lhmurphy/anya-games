@@ -1,7 +1,7 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 
-async function getHTML(url) {
+async function getHTML() {
     const { data: html } = await axios.get('https://www.whsmith.co.uk/charts/fiction-book-chart/cha00003/');
     return html;
 }
@@ -9,30 +9,19 @@ async function getHTML(url) {
 async function getBookTitle(html) {
     // load up cheerio
     const $ = cheerio.load(html);
-    const title = $('.name-link')
-        .clone()    //clone the element
-        .children() //select all the children
-        .remove()   //remove all the children
-        .end()  //again go back to selected element
-        .text();
+    const title = $('.product-name.is-tablet .name-link')
     const author = $('.tile-attribute')
-        .clone()    //clone the element
-        .children() //select all the children
-        .remove()   //remove all the children
-        .end()  //again go back to selected element
-        .text();
+    let titles = [];
 
     // without .html() in title.html() we get all of the elements, similar to .querySelectorAll()
     // need to loop through each node and grab: title & corresponding author
-    const bookDetails = `${title}By: ${author}`;
-    const splitTitle = title.split(',');
-    const splitAuthor = author.split(',');
+    // const bookDetails = `${title}By: ${author}`;
 
-    console.log('splitTitle', splitTitle);
-    console.log('splitAuthor', splitAuthor);
-
-
-    return bookDetails;
+    title.each((index, el) => {
+        titles.push($(el).html());
+        return titles;
+    });
+    return titles;
 }
 
 export { getHTML, getBookTitle };

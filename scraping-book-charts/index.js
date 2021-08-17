@@ -5,7 +5,8 @@ import { getHTML, getBookTitle } from "./lib/sraper";
 async function go() {
     const WHSmithData = await getHTML('https://www.whsmith.co.uk/charts/fiction-book-chart/cha00003/');
     const books = await getBookTitle(WHSmithData);
-    // console.log(`The first WHSmiths book is: ${books}`);
+
+    console.log(`The WHSmiths bestsellers are: ${books}`);
 }
 
 go();

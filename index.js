@@ -1,23 +1,23 @@
-import { getHTML, getBookTitle } from "./lib/sraper";
+import express from "express";
+import { getWHSmithsBooks, getPubWeeklyBooks } from "./lib/sraper";
 
-// check if data is 'server rendered' via the source code...?
+const app = express();
 
-const WHSmithUrl = 'https://www.whsmith.co.uk/charts/fiction-book-chart/cha00003/';
-const PubWeeklyUrl = 'https://www.publishersweekly.com/pw/nielsen/hardcoverfiction.html';
-const sites = ['WHSmiths', ];
+app.get('/scrape', async (req, res, next) => {
+    console.log('Scraping');
+    
+    const [WHSmithsBooks, PubWeeklyBooks] = await Promise.all([
+        getWHSmithsBooks(), 
+        getPubWeeklyBooks()
+    ]);
 
-async function go() {
-    const WHSmithPromise = getHTML(WHSmithUrl);
-    const PubWeeklyPromise = getHTML(PubWeeklyUrl);
-    const [WHSmithHTML, PubWeeklyHTML] = await Promise.all([WHSmithPromise, PubWeeklyPromise])
+    console.log(WHSmithsBooks, PubWeeklyBooks);
+    res.json({ WHSmithsBooks, PubWeeklyBooks})
+});
 
-    const WHSmithsBooks = await getBookTitle(WHSmithHTML, 'WHSmiths');
-    const PubWeeklyBooks = await getBookTitle(PubWeeklyHTML, 'PubWeekly');
+app.listen(2093, () => console.log(`Example app running on PORT 2092`))
 
-    console.log(`
-        The WHSmiths bestsellers are: ${WHSmithsBooks} <br>
-        The Publishers Weekly bestsellers are: ${PubWeeklyBooks} 
-    `);
-}
-
-go();
+// console.log(`
+// The WHSmiths bestsellers are: ${WHSmithsBooks} <br>
+// The Publishers Weekly bestsellers are: ${PubWeeklyBooks} 
+// `);

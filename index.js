@@ -4,7 +4,7 @@ import { getWHSmithsBooks, getPubWeeklyBooks } from "./lib/sraper";
 const app = express();
 
 app.get('/scrape', async (req, res, next) => {
-    console.log('Scraping');
+    console.log('Scraping!!');
     
     const [WHSmithsBooks, PubWeeklyBooks] = await Promise.all([
         getWHSmithsBooks(), 

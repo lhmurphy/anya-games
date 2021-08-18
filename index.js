@@ -1,10 +1,13 @@
 import express from "express";
 import { getWHSmithsBooks, getPubWeeklyBooks } from "./lib/sraper";
+import db from "./lib/db";
 
 const app = express();
 
+console.log(db);
+
 app.get('/scrape', async (req, res, next) => {
-    console.log('Scraping!!');
+    console.log('Scraping');
     
     const [WHSmithsBooks, PubWeeklyBooks] = await Promise.all([
         getWHSmithsBooks(), 
